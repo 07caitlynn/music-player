@@ -35,7 +35,7 @@ html, body {
   margin-left: 10px;
   font-weight: bold;
   font-size: 20px;
-  color: #595d8d;
+  color: #3b3937;
   flex-grow: 1;
 }
 
@@ -97,7 +97,7 @@ html, body {
 
 .song-title {
   font-size: 17px;
-  color: #595d8d;
+  color: #3b3937;
   white-space: nowrap;
   display: inline-block;
 }
@@ -178,6 +178,7 @@ html, body {
   margin-top: 10px; 
   pointer-events: none;
 }
+
 
 
 
