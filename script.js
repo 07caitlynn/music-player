@@ -149,8 +149,8 @@ function drawVisualizer() {
   ctx.lineCap = "round";
 
   const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-  gradient.addColorStop(0, "#7b2cff");
-  gradient.addColorStop(1, "#ffffff");
+  gradient.addColorStop(0, "#ebddcb");
+  gradient.addColorStop(1, "#ebddcb");
   ctx.strokeStyle = gradient;
 
   ctx.beginPath();
@@ -430,3 +430,4 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
