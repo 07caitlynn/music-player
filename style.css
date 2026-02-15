@@ -158,7 +158,7 @@ html, body {
 .progress-bar-container {
   margin-top: 10px;
   height: 10px;
-  border: 2px solid thistle;
+  border: 2px solid #004e64;
   border-radius: 4px;
   overflow: hidden;
   cursor: pointer;
@@ -168,7 +168,7 @@ html, body {
 
 .progress-bar {
   height: 100%;
-  background: #e8e1d1;
+  background: #ebddcb;
   width: 0%;
 }
 
@@ -178,6 +178,7 @@ html, body {
   margin-top: 10px; 
   pointer-events: none;
 }
+
 
 
 
