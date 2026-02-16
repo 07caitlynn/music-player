@@ -30,8 +30,8 @@ let shuffleOrder = [];
 let shufflePosition = 0;
 
 /* ---------- VISUALIZER SETTINGS ---------- */
-let visualizerSensitivity = 0.6;
-let visualizerHeight = 45; // shorter visualizer (was 90)
+let visualizerSensitivity = 0.235;
+let visualizerHeight = 80;
 
 
 let audioContext;
@@ -51,7 +51,11 @@ const coverImages = [
   "default-cover4.png",
   "default-cover5.png",
   "default-cover6.png",
-  "default-cover7.png"
+  "default-cover7.png",
+  "default-cover8.png",
+  "default-cover9.png",
+  "default-cover10.png",
+  "default-cover11.png"
 ];
 
 /* ---------- TIME FORMATTER ---------- */
@@ -113,7 +117,7 @@ function initVisualizer() {
     analyser.connect(audioContext.destination);
 
     analyser.fftSize = 1024;
-    bufferLength = analyser.fftSize;
+    bufferLength = analyser.frequencyBinCount;
     dataArray = new Uint8Array(bufferLength);
   }
 
@@ -123,11 +127,13 @@ function initVisualizer() {
 
 function resizeCanvas() {
   const width = progressBarContainer.offsetWidth;
+  const height = visualizerHeight * 2;
 
-  canvas.style.width = width + "px";
   canvas.width = width;
-
-  canvas.height = visualizerHeight;
+  canvas.height = height;
+  
+  canvas.style.width = width + "px";
+  canvas.style.height = height + "px";
 }
 
 window.addEventListener("resize", resizeCanvas);
@@ -143,9 +149,9 @@ function drawVisualizer() {
 
   const bands = 61;
   const centerY = canvas.height / 2;
-  const sliceWidth = canvas.width / bands;
+  const curveW = canvas.width / bands;
 
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 1;
   ctx.lineCap = "round";
 
   const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
@@ -159,24 +165,41 @@ function drawVisualizer() {
   let direction = 1;
 
   for (let i = 0; i < bands; i++) {
+    // Logarithmic frequency mapping like Amatical (50Hz - 18000Hz)
+    const minFreq = 50;
+    const maxFreq = 18000;
+    const sampleRate = audioContext.sampleRate;
+    const nyquist = sampleRate / 2;
+    
+    // Logarithmic scale for frequency distribution
+    const logMin = Math.log(minFreq);
+    const logMax = Math.log(maxFreq);
+    const scale = (logMax - logMin) / bands;
+    const freq = Math.exp(logMin + scale * i);
+    
+    // Map frequency to FFT bin
+    const freqIndex = Math.floor((freq / nyquist) * bufferLength);
+    const clampedIndex = Math.min(freqIndex, bufferLength - 1);
+    
+    let raw = dataArray[clampedIndex] / 255;
 
-    // use same style scaling as CurveH
-    let raw = dataArray[i] / 255;
+    // Boost higher frequencies (right side) progressively
+    const freqBoost = 1 + (i / bands) * 1.5;
+    raw *= visualizerSensitivity * freqBoost;
 
-    // smoothing like AverageSize
     smoothData[i] += (raw - smoothData[i]) * 0.25;
 
     const amplitude = smoothData[i] * visualizerHeight;
 
-    const x = i * sliceWidth;
-    const nextX = (i + 1) * sliceWidth;
+    const x = i * curveW;
+    const nextX = (i + 1) * curveW;
 
-    const controlX = x + sliceWidth / 2;
-    const controlY = centerY + amplitude * direction;
+    const controlX = x + curveW / 2;
+    const controlY = centerY + (amplitude * direction);
 
     ctx.quadraticCurveTo(controlX, controlY, nextX, centerY);
 
-    direction *= -1; // alternate up/down like Rainmeter
+    direction *= -1;
   }
 
   ctx.stroke();
@@ -429,5 +452,9 @@ window.addEventListener("DOMContentLoaded", () => {
       window.electronAPI.closeWindow();
     });
   }
+  
+  // Initialize canvas size on load
+  if (canvas && progressBarContainer) {
+    resizeCanvas();
+  }
 });
-
