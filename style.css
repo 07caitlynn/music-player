@@ -175,7 +175,7 @@ html, body {
 #visualizer {
   display: block;
   width: 100%;
-  margin-top: 10px; 
+  margin-top: -45px; 
   pointer-events: none;
 }
 
