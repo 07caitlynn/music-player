@@ -86,13 +86,17 @@ html, body {
   object-fit: cover;
   margin-top: 28px;
   border-radius: 8px;
+  margin-bottom: 10px;
 }
 
 .song-title-wrapper {
   width: 100%;
   overflow: hidden;
-  height: 22px;
+  height: 30px;
   position: relative;
+  margin: 10px 0;
+  text-align: center;
+  display: block;
 }
 
 .song-title {
@@ -100,6 +104,10 @@ html, body {
   color: #3b3937;
   white-space: nowrap;
   display: inline-block;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  line-height: 30px;
 }
 
 
@@ -110,6 +118,7 @@ html, body {
   justify-content: center;
   align-items: center;
   gap: 6px;
+  margin-top: 10px;
 }
 
 .img-button {
@@ -178,8 +187,5 @@ html, body {
   margin-top: -45px; 
   pointer-events: none;
 }
-
-
-
 
 
